@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Novae Astro Club — Look up. Wonder more.</title>
+    <meta
+      name="description"
+      content="Novae Astro Club is the astronomy community by Novae Glamp — a dark-sky campsite in Bhongir, 60 km from Hyderabad. Telescope nights, live astronomy classes, Ask an Astronomer and the NAC e-Magazine."
+    />
+    <meta name="theme-color" content="#050506" />
+    <meta property="og:title" content="Novae Astro Club — Look up. Wonder more." />
+    <meta
+      property="og:description"
+      content="A community built around curiosity, exploration and the night sky. Dark-sky telescope nights at Novae Glamp, Bhongir."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+
+  <body>
+    <!-- Shared brand symbols -->
+    <svg class="sprite" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="nac-grad" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#5A2DFF" />
+          <stop offset="1" stop-color="#FF3CAC" />
+        </linearGradient>
+        <clipPath id="nac-front"><rect x="0" y="32" width="64" height="32" /></clipPath>
+        <symbol id="nac-mark" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="30" fill="url(#nac-grad)" />
+          <g transform="rotate(-18 32 32)">
+            <ellipse cx="32" cy="32" rx="21" ry="6.2" fill="none" stroke="#F8F8FC" stroke-width="2.6" />
+          </g>
+          <circle cx="32" cy="32" r="10.5" fill="url(#nac-grad)" stroke="#F8F8FC" stroke-width="3.2" />
+          <g transform="rotate(-18 32 32)" clip-path="url(#nac-front)">
+            <ellipse cx="32" cy="32" rx="21" ry="6.2" fill="none" stroke="#F8F8FC" stroke-width="2.6" />
+          </g>
+        </symbol>
+        <symbol id="i-star" viewBox="0 0 24 24">
+          <path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z" fill="currentColor" />
+        </symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24">
+          <path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- Loading sequence -->
+    <div class="loader" aria-hidden="true">
+      <div class="loader__stage">
+        <svg class="loader__svg" viewBox="0 0 200 200">
+          <circle class="loader__orbit" cx="100" cy="100" r="88" />
+          <circle class="loader__track" cx="100" cy="100" r="88" />
+          <g class="loader__moon-arm"><circle class="loader__moon" cx="188" cy="100" r="3.2" /></g>
+          <use href="#nac-mark" class="loader__mark" x="58" y="58" width="84" height="84" />
+        </svg>
+        <p class="loader__word">Novae Astro Club</p>
+      </div>
+      <div class="loader__status">
+        <span class="loader__label">Calibrating optics</span>
+        <span class="loader__count">000</span>
+      </div>
+    </div>
+
+    <canvas class="webgl" aria-hidden="true"></canvas>
+    <div class="sky-fallback" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- Desktop cursor -->
+    <div class="cursor" aria-hidden="true">
+      <div class="cursor__glow"></div>
+      <div class="cursor__ring"><span class="cursor__label"></span></div>
+      <div class="cursor__dot"></div>
+    </div>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="nav">
+      <div class="nav__inner">
+        <a class="logo" href="#top" aria-label="Novae Astro Club — back to top">
+          <svg class="logo__mark" aria-hidden="true"><use href="#nac-mark" /></svg>
+          <span class="logo__word">Novae <em>Astro Club</em></span>
+        </a>
+        <nav class="nav__links" aria-label="Primary">
+          <ul>
+            <li><a href="#about" data-nav="about"><span>About</span></a></li>
+            <li><a href="#experience" data-nav="experience"><span>Experience</span></a></li>
+            <li><a href="#explore" data-nav="explore"><span>Explore</span></a></li>
+            <li><a href="#programs" data-nav="programs"><span>Events</span></a></li>
+            <li><a href="#membership" data-nav="membership"><span>Membership</span></a></li>
+            <li><a href="#crew" data-nav="crew"><span>Crew</span></a></li>
+          </ul>
+        </nav>
+        <a class="btn btn--pink btn--sm nav__cta" href="#join" data-magnetic><span>Join the Club</span></a>
+        <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="menu" id="menu" aria-hidden="true">
+      <div class="menu__stars" aria-hidden="true"></div>
+      <nav class="menu__nav" aria-label="Mobile">
+        <ul>
+          <li><a href="#about"><i>01</i><span>About</span></a></li>
+          <li><a href="#experience"><i>02</i><span>Experience</span></a></li>
+          <li><a href="#explore"><i>03</i><span>Explore</span></a></li>
+          <li><a href="#programs"><i>04</i><span>Events</span></a></li>
+          <li><a href="#membership"><i>05</i><span>Membership</span></a></li>
+          <li><a href="#gallery"><i>06</i><span>Gallery</span></a></li>
+          <li><a href="#crew"><i>07</i><span>Crew</span></a></li>
+          <li><a href="#join"><i>08</i><span>Join</span></a></li>
+        </ul>
+      </nav>
+      <div class="menu__foot">
+        <p class="mono">Explore · Discover · Beyond</p>
+        <a class="mono" href="https://www.instagram.com/novaeastroclub/" target="_blank" rel="noopener">@novaeastroclub</a>
+      </div>
+    </div>
+
+    <aside class="hud" aria-hidden="true">
+      <div class="hud__rail"><span class="hud__fill"></span></div>
+      <p class="hud__label">00 — Launch</p>
+    </aside>
+
+    <main id="main">
+      <!-- ============ HERO ============ -->
+      <section class="hero" id="top" data-label="00 — Launch">
+        <div class="hero__inner container">
+          <p class="eyebrow hero__eyebrow"><span class="pulse"></span>Dark-sky astronomy · Bhongir, near Hyderabad</p>
+          <h1 class="hero__title">
+            <span class="hero__line">Look up.</span>
+            <span class="hero__line hero__line--accent">Wonder more.</span>
+          </h1>
+          <div class="hero__bottom">
+            <div class="hero__copy">
+              <p class="lead">Novae Astro Club is a community built around curiosity, exploration, and the night sky.</p>
+              <p>
+                From your first view of Saturn’s rings through a telescope to conversations about distant galaxies and the
+                origins of the universe, we create opportunities to experience astronomy beyond textbooks.
+              </p>
+            </div>
+            <div class="hero__ctas">
+              <a href="#join" class="btn btn--pink" data-magnetic><span>Join the Club</span></a>
+              <a href="#explore" class="btn btn--purple" data-magnetic><span>Explore the Cosmos</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="hero__foot container">
+          <p class="tagline">Explore <i>·</i> Discover <i>·</i> Beyond</p>
+          <a class="scroll-cue" href="#about"><span>Scroll to launch</span><i></i></a>
+        </div>
+      </section>
+
+      <!-- ============ ABOUT ============ -->
+      <section class="about section" id="about" data-label="01 — About">
+        <div class="container">
+          <p class="eyebrow">01 / About</p>
+          <h2 class="h-display about__title" data-reveal="chars">The universe is bigger than a textbook.</h2>
+          <div class="about__grid">
+            <div class="about__copy">
+              <p class="lead" data-reveal="lines">
+                Novae Astro Club brings astronomy closer to people through observation, exploration, learning and community.
+              </p>
+              <p data-reveal="fade">
+                We are the astronomy community by <strong>Novae Glamp</strong> — a dark-sky campsite in Bhongir, 60 km from
+                Hyderabad, where city lights fade and planets, star clusters and meteor showers come alive through a telescope.
+              </p>
+              <p data-reveal="fade">
+                We welcome school students, college students, families, astrophotographers, science lovers — and anyone curious
+                about the universe.
+              </p>
+            </div>
+            <ul class="facts" aria-label="Club at a glance">
+              <li class="fact"><b data-count="60">60</b><span>km from Hyderabad, under darker skies</span></li>
+              <li class="fact"><b data-count="0">0</b><span>entrance tests. No prior knowledge needed</span></li>
+              <li class="fact"><b data-count="24">24</b><span>live sessions a year</span></li>
+              <li class="fact"><b data-count="12">12</b><span>e-magazines a year</span></li>
+            </ul>
+          </div>
+
+          <div class="about__ask">
+            <p class="about__ask-pre" data-reveal="lines">You don’t need to be an expert. You just need to look up and ask:</p>
+            <p class="ask" data-reveal="ask">What’s out there?</p>
+          </div>
+
+          <div class="about__vision">
+            <p class="eyebrow">Vision</p>
+            <p class="statement" data-reveal="words">
+              We envision a community where anyone can discover astronomy through direct experience — looking through a
+              telescope, identifying a constellation, photographing the night sky, or simply standing beneath a sky full of stars.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ EXPERIENCE (pinned, orbit-driven) ============ -->
+      <section class="experience" id="experience" data-label="02 — Experience">
+        <div class="experience__frame container">
+          <div class="experience__head">
+            <p class="eyebrow">02 / Experience</p>
+            <h2 class="h-display" data-reveal="chars">What we do</h2>
+          </div>
+          <ol class="exp">
+            <li class="exp__item">
+              <span class="exp__num">01</span>
+              <h3 class="exp__title">Observe</h3>
+              <p class="exp__text">
+                Experience the night sky through guided telescope observations, skywatching sessions and celestial-event
+                observations.
+              </p>
+            </li>
+            <li class="exp__item">
+              <span class="exp__num">02</span>
+              <h3 class="exp__title">Explore</h3>
+              <p class="exp__text">
+                Discover planets, stars, galaxies, nebulae, cosmology, astrophysics and the science behind the universe.
+              </p>
+            </li>
+            <li class="exp__item">
+              <span class="exp__num">03</span>
+              <h3 class="exp__title">Create</h3>
+              <p class="exp__text">
+                Explore astrophotography, observation projects, sky maps, educational content and creative ways to communicate
+                astronomy.
+              </p>
+            </li>
+            <li class="exp__item">
+              <span class="exp__num">04</span>
+              <h3 class="exp__title">Connect</h3>
+              <p class="exp__text">
+                Meet people who share the same curiosity and build a community around astronomy and space science.
+              </p>
+            </li>
+          </ol>
+          <div class="exp-nav" aria-hidden="true">
+            <span class="exp-nav__item is-active">Observe</span>
+            <span class="exp-nav__item">Explore</span>
+            <span class="exp-nav__item">Create</span>
+            <span class="exp-nav__item">Connect</span>
+            <span class="exp-nav__bar"><i></i></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ EXPLORE (horizontal) ============ -->
+      <section class="explore" id="explore" data-label="03 — Explore">
+        <div class="explore__viewport">
+          <div class="explore__track">
+            <div class="explore__intro">
+              <p class="eyebrow">03 / Content pillars</p>
+              <h2 class="h-display" data-reveal="chars">Start close. Go beyond.</h2>
+              <p class="lead">Five ways into the universe — from the worlds next door to the edge of what we can see.</p>
+              <p class="explore__hint mono"><span>Keep scrolling</span><svg><use href="#i-arrow" /></svg></p>
+            </div>
+
+            <article class="xpanel">
+              <div class="xpanel__media" data-cursor="Explore">
+                <img data-plate="saturn" alt="Saturn and its rings, illustrative telescope view" />
+              </div>
+              <div class="xpanel__body">
+                <span class="xpanel__num" aria-hidden="true">01</span>
+                <p class="eyebrow">Solar System</p>
+                <h3 class="xpanel__title">The worlds next door</h3>
+                <p class="planets">
+                  <span>Mercury · Venus · Earth · Mars</span>
+                  <span class="planets__outer">Jupiter · Saturn · Uranus · Neptune</span>
+                </p>
+                <p>Explore the worlds around our Sun and discover the science, history and mysteries behind each one.</p>
+                <p class="xpanel__q"><svg><use href="#i-star" /></svg>How do planets form?</p>
+              </div>
+            </article>
+
+            <article class="xpanel">
+              <div class="xpanel__media" data-cursor="Explore">
+                <img data-plate="trails" alt="Star trails circling above a tent under a dark sky, illustrative" />
+              </div>
+              <div class="xpanel__body">
+                <span class="xpanel__num" aria-hidden="true">02</span>
+                <p class="eyebrow">Astrophotography</p>
+                <h3 class="xpanel__title">Moments worth keeping</h3>
+                <p>
+                  The night sky is full of moments worth remembering. NAC encourages members to explore astrophotography — from
+                  photographing the Moon and planets to capturing star fields, nebulae and deep-sky objects.
+                </p>
+                <a class="link-arrow" href="#gallery"><span>Explore the gallery</span><svg><use href="#i-arrow" /></svg></a>
+              </div>
+            </article>
+
+            <article class="xpanel">
+              <div class="xpanel__media" data-cursor="Explore">
+                <img data-plate="nebula" alt="A glowing emission nebula, illustrative" />
+              </div>
+              <div class="xpanel__body">
+                <span class="xpanel__num" aria-hidden="true">03</span>
+                <p class="eyebrow">Deep Sky</p>
+                <h3 class="xpanel__title">Faint, ancient light</h3>
+                <p>
+                  Beyond the planets lie star clusters, nebulae and galaxies — faint light that needs dark skies and patient eyes.
+                  Away from city lights, they finally begin to show.
+                </p>
+                <p class="xpanel__q"><svg><use href="#i-star" /></svg>How are stars born?</p>
+              </div>
+            </article>
+
+            <article class="xpanel">
+              <div class="xpanel__media" data-cursor="Explore">
+                <img data-plate="galaxy" alt="A spiral galaxy seen at an angle, illustrative" />
+              </div>
+              <div class="xpanel__body">
+                <span class="xpanel__num" aria-hidden="true">04</span>
+                <p class="eyebrow">Cosmology</p>
+                <h3 class="xpanel__title">The biggest questions</h3>
+                <p>
+                  How did the universe begin, and how does it grow? Every bit of light in an eyepiece is a message from the past —
+                  the light from the Andromeda Galaxy left it about 2.5 million years ago.
+                </p>
+                <p class="xpanel__q"><svg><use href="#i-star" /></svg>How far can we see into the universe?</p>
+              </div>
+            </article>
+
+            <article class="xpanel">
+              <div class="xpanel__media" data-cursor="Explore">
+                <img data-plate="moon" alt="The Moon at first quarter, illustrative telescope view" />
+              </div>
+              <div class="xpanel__body">
+                <span class="xpanel__num" aria-hidden="true">05</span>
+                <p class="eyebrow">Space Exploration</p>
+                <h3 class="xpanel__title">Missions that reach further</h3>
+                <p>
+                  From Chandrayaan-3 touching down near the Moon’s south pole to Aditya-L1 watching the Sun and the James Webb
+                  Space Telescope studying distant worlds — we follow the missions expanding what humanity can see.
+                </p>
+                <p class="xpanel__q"><svg><use href="#i-star" /></svg>How do astronomers discover new worlds?</p>
+              </div>
+            </article>
+          </div>
+          <div class="explore__progress" aria-hidden="true">
+            <span class="explore__count mono">01 / 05</span>
+            <span class="explore__bar"><i></i></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PROGRAMS: year / events / learning ============ -->
+      <section class="programs section" id="programs" data-label="04 — Events">
+        <div class="container">
+          <p class="eyebrow">04 / A year in the club</p>
+          <h2 class="h-display" data-reveal="chars">Every month, <span class="grad">something real.</span></h2>
+
+          <ul class="months">
+            <li class="month js-light">
+              <svg class="month__icon" viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="7" width="24" height="21" rx="3" /><path d="M4 13h24M10 4v6M22 4v6" /><circle cx="20" cy="20" r="2.5" /></svg>
+              <h3>“Sky This Month” calendar</h3>
+              <p>What to watch and when, on WhatsApp — easy enough for first-timers.</p>
+            </li>
+            <li class="month js-light">
+              <svg class="month__icon" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="6" width="26" height="17" rx="3" /><path d="M13 11v7l6-3.5z M11 28h10" /></svg>
+              <h3>Live astronomy class</h3>
+              <p>30 minutes, live and online, every month — on evenings &amp; weekends.</p>
+            </li>
+            <li class="month js-light">
+              <svg class="month__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 6h22v15H14l-6 5v-5H5z" /><path d="M13 11a3 3 0 1 1 4 2.8c-.7.3-1 .8-1 1.5M16 18v.2" /></svg>
+              <h3>“Ask an Astronomer”</h3>
+              <p>A live session every month. Bring any question about space — get a real answer.</p>
+            </li>
+            <li class="month js-light">
+              <svg class="month__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 4h16l4 4v20H6z" /><path d="M10 11h12M10 16h12M10 21h7" /></svg>
+              <h3>NAC e-Magazine</h3>
+              <p>Write on the month’s theme — get published, with your name in print.</p>
+            </li>
+            <li class="month js-light">
+              <svg class="month__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 15l17-8 2.5 5-17 8z" /><path d="M22 7l3-1.5 2.5 5-3 1.5M14 18l-4 10M16 17l4 11" /></svg>
+              <h3>Telescope nights</h3>
+              <p>Under dark rural skies at Novae Glamp — the Moon, Saturn’s rings and star clusters, live.</p>
+            </li>
+          </ul>
+
+          <div class="tally">
+            <p><b data-count="24">24</b><span>live sessions a year</span></p>
+            <p><b data-count="12">12</b><span>magazines a year — and a real chance to see your name published</span></p>
+            <p><b data-count="4">4</b><span>telescope nights a year for Astronomer members</span></p>
+          </div>
+        </div>
+
+        <div class="events container">
+          <div class="events__head">
+            <p class="eyebrow">Events</p>
+            <h3 class="h-section" data-reveal="lines">Under the sky, together.</h3>
+          </div>
+          <ul class="events__list">
+            <li><span class="ev__n">01</span><span class="ev__name">Telescope Observation Nights</span><span class="ev__tag">Observe</span></li>
+            <li><span class="ev__n">02</span><span class="ev__name">Stargazing Sessions</span><span class="ev__tag">Observe</span></li>
+            <li><span class="ev__n">03</span><span class="ev__name">Moon &amp; Planetary Observation</span><span class="ev__tag">Observe</span></li>
+            <li><span class="ev__n">04</span><span class="ev__name">Meteor Shower Watch Parties</span><span class="ev__tag">Celestial events</span></li>
+            <li><span class="ev__n">05</span><span class="ev__name">Lunar &amp; Solar Eclipse Observations</span><span class="ev__tag">Celestial events</span></li>
+            <li><span class="ev__n">06</span><span class="ev__name">Deep-Sky Observation</span><span class="ev__tag">Observe</span></li>
+            <li><span class="ev__n">07</span><span class="ev__name">Astrophotography Sessions</span><span class="ev__tag">Create</span></li>
+            <li><span class="ev__n">08</span><span class="ev__name">Astronomy Talks &amp; Workshops</span><span class="ev__tag">Learn</span></li>
+            <li><span class="ev__n">09</span><span class="ev__name">Space Mission Discussions</span><span class="ev__tag">Learn</span></li>
+            <li><span class="ev__n">10</span><span class="ev__name">Community Meetups</span><span class="ev__tag">Connect</span></li>
+          </ul>
+        </div>
+
+        <div class="themes container">
+          <div class="themes__head">
+            <p class="eyebrow">Learning themes</p>
+            <h3 class="h-section" data-reveal="lines">Seven stars. <span class="pink">Seven questions.</span></h3>
+            <p data-reveal="fade">
+              The Saptarishi — the Big Dipper — has seven bright stars. We’ve given each one a question that keeps us looking up.
+            </p>
+          </div>
+          <div class="dipper">
+            <svg class="dipper__svg" viewBox="0 0 1000 520" aria-hidden="true">
+              <g class="dipper__lines">
+                <line x1="80" y1="330" x2="250" y2="230" />
+                <line x1="250" y1="230" x2="400" y2="255" />
+                <line x1="400" y1="255" x2="560" y2="250" />
+                <line x1="560" y1="250" x2="720" y2="110" />
+                <line x1="720" y1="110" x2="800" y2="310" />
+                <line x1="800" y1="310" x2="615" y2="400" />
+                <line x1="615" y1="400" x2="560" y2="250" />
+              </g>
+              <g class="dipper__stars">
+                <g class="dstar" transform="translate(80 330)"><circle class="dstar__halo" r="16" /><circle class="dstar__core" r="4" /></g>
+                <g class="dstar" transform="translate(250 230)"><circle class="dstar__halo" r="18" /><circle class="dstar__core" r="4.6" /></g>
+                <g class="dstar" transform="translate(400 255)"><circle class="dstar__halo" r="18" /><circle class="dstar__core" r="4.8" /></g>
+                <g class="dstar" transform="translate(560 250)"><circle class="dstar__halo" r="12" /><circle class="dstar__core" r="3.2" /></g>
+                <g class="dstar" transform="translate(720 110)"><circle class="dstar__halo" r="18" /><circle class="dstar__core" r="4.8" /></g>
+                <g class="dstar" transform="translate(800 310)"><circle class="dstar__halo" r="16" /><circle class="dstar__core" r="4.2" /></g>
+                <g class="dstar" transform="translate(615 400)"><circle class="dstar__halo" r="16" /><circle class="dstar__core" r="4.2" /></g>
+                <circle class="dstar__alcor" cx="266" cy="206" r="2" />
+              </g>
+            </svg>
+            <ol class="dipper__labels">
+              <li style="--x: 8%; --y: 63.5%" data-pos="below"><span class="mono">Alkaid · Marichi</span><span class="q">How are stars born?</span></li>
+              <li style="--x: 25%; --y: 44%" data-pos="above"><span class="mono">Mizar · Vasishtha</span><span class="q">What happens inside a black hole?</span></li>
+              <li style="--x: 40%; --y: 49%" data-pos="below"><span class="mono">Alioth · Angiras</span><span class="q">How do planets form?</span></li>
+              <li style="--x: 56%; --y: 48%" data-pos="above-left"><span class="mono">Megrez · Atri</span><span class="q">Why do galaxies collide?</span></li>
+              <li style="--x: 72%; --y: 21%" data-pos="above"><span class="mono">Dubhe · Kratu</span><span class="q">How far can we see into the universe?</span></li>
+              <li style="--x: 80%; --y: 59.6%" data-pos="right"><span class="mono">Merak · Pulaha</span><span class="q">Are we alone?</span></li>
+              <li style="--x: 61.5%; --y: 77%" data-pos="below"><span class="mono">Phecda · Pulastya</span><span class="q">How do astronomers discover new worlds?</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ MEMBERSHIP ============ -->
+      <section class="membership section" id="membership" data-label="05 — Membership">
+        <div class="container">
+          <div class="membership__head">
+            <p class="eyebrow">05 / Membership</p>
+            <h2 class="h-display" data-reveal="chars">Choose your <span class="grad">orbit.</span></h2>
+          </div>
+          <div class="plans">
+            <article class="plan js-tilt">
+              <div class="plan__inner js-light">
+                <header class="plan__head">
+                  <h3 class="plan__name">Explorer</h3>
+                  <p class="plan__sub">Start looking up</p>
+                </header>
+                <p class="plan__price"><span class="rupee">₹</span><b data-price="999">999</b><small>/ year</small></p>
+                <p class="plan__note">Founding members who joined on Launch Day, 21 July 2026, got Explorer free.</p>
+                <ul class="plan__list">
+                  <li>“Sky This Month” WhatsApp calendar</li>
+                  <li>1 free online astronomy class / month</li>
+                  <li>“Ask an Astronomer” live session / month</li>
+                  <li>NAC e-Magazine — write &amp; get published</li>
+                  <li>Digital certificate with name &amp; member ID</li>
+                  <li>Invites to all NAC public events</li>
+                </ul>
+                <a class="btn btn--ghost plan__cta" href="#join" data-join data-magnetic><span>Join as Explorer</span></a>
+              </div>
+            </article>
+
+            <article class="plan plan--featured js-tilt">
+              <div class="plan__inner js-light">
+                <span class="plan__badge">Most loved</span>
+                <header class="plan__head">
+                  <h3 class="plan__name">Astronomer</h3>
+                  <p class="plan__sub">Touch a telescope. Every season.</p>
+                </header>
+                <p class="plan__price"><span class="rupee">₹</span><b data-price="1999">1,999</b><small>/ year</small></p>
+                <p class="plan__note">Less than <strong>₹6 a day</strong>.</p>
+                <p class="plan__plus mono">Everything in Explorer, plus —</p>
+                <ul class="plan__list">
+                  <li>4 telescope nights a year at Novae Glamp<small>Evening events, 7 to 10:30 PM — bring one companion free</small></li>
+                  <li>Exclusive Sky Journal — a printed journaling book</li>
+                  <li>NAC printed workbook + annual certificate</li>
+                  <li>Telescope handling training — hands-on</li>
+                  <li>Front-row invites to meteor showers &amp; eclipses</li>
+                </ul>
+                <p class="plan__callout">
+                  Bought one by one, these cost <strong>₹4,500+</strong>. Members pay less than half.
+                  <span>Stay-the-night add-on: tent, dinner &amp; breakfast at member rates.</span>
+                </p>
+                <a class="btn btn--pink plan__cta" href="#join" data-join data-magnetic><span>Become an Astronomer</span></a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ GALLERY ============ -->
+      <section class="gallery section" id="gallery" data-label="06 — Gallery">
+        <div class="container gallery__head">
+          <p class="eyebrow">06 / Astrophotography</p>
+          <h2 class="h-display" data-reveal="chars">Moments worth remembering.</h2>
+          <p class="lead" data-reveal="lines">
+            From photographing the Moon and planets to capturing star fields, nebulae and deep-sky objects — the night sky rewards
+            anyone who points a camera at it.
+          </p>
+          <p class="gallery__note mono">Illustrative plates · Tag <a href="https://www.instagram.com/novaeastroclub/" target="_blank" rel="noopener">@novaeastroclub</a> to share yours</p>
+        </div>
+        <div class="gallery__grid container">
+          <div class="gallery__col" data-depth="0.6">
+            <figure class="shot shot--square" data-cursor="View">
+              <div class="shot__frame"><img data-plate="moon" alt="The Moon at first quarter, craters along the terminator" /></div>
+              <figcaption><span>The Moon</span><em>First-quarter terminator</em></figcaption>
+            </figure>
+            <figure class="shot shot--wide" data-cursor="View">
+              <div class="shot__frame"><img data-plate="trails" alt="Star trails arcing over a lit tent" /></div>
+              <figcaption><span>Star trails over camp</span><em>Long exposure</em></figcaption>
+            </figure>
+          </div>
+          <div class="gallery__col" data-depth="-0.4">
+            <figure class="shot shot--tall" data-cursor="View">
+              <div class="shot__frame"><img data-plate="nebula" alt="Glowing pink and teal emission nebula with dark dust lanes" /></div>
+              <figcaption><span>Emission nebula</span><em>Deep-sky study</em></figcaption>
+            </figure>
+            <figure class="shot shot--tall" data-cursor="View">
+              <div class="shot__frame"><img data-plate="saturn" alt="Saturn with its rings tilted towards us" /></div>
+              <figcaption><span>Saturn</span><em>Planetary imaging</em></figcaption>
+            </figure>
+          </div>
+          <div class="gallery__col" data-depth="1">
+            <figure class="shot shot--tall" data-cursor="View">
+              <div class="shot__frame"><img data-plate="pleiades" alt="The Pleiades star cluster in blue reflection nebulosity" /></div>
+              <figcaption><span>The Pleiades · Krittika</span><em>Open star cluster, M45</em></figcaption>
+            </figure>
+            <figure class="shot shot--wide" data-cursor="View">
+              <div class="shot__frame"><img data-plate="galaxy" alt="A spiral galaxy tilted at an angle" /></div>
+              <figcaption><span>Spiral galaxy</span><em>Cosmology study</em></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CREW ============ -->
+      <section class="crew section" id="crew" data-label="07 — Crew">
+        <div class="container">
+          <p class="eyebrow">07 / The crew</p>
+          <h2 class="h-display" data-reveal="chars">Who’s behind <span class="grad">the telescope.</span></h2>
+          <div class="people">
+            <article class="person">
+              <div class="person__portrait">
+                <svg class="person__ring" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="57" /></svg>
+                <div class="person__photo">
+                  <span class="person__mono" aria-hidden="true">RP</span>
+                  <img src="/crew/ravi-raja-pothineni.jpg" alt="Ravi Raja Pothineni" loading="lazy" onerror="this.remove()" />
+                </div>
+              </div>
+              <div class="person__body">
+                <h3 class="person__name">Ravi Raja Pothineni</h3>
+                <p class="person__role mono">Astro Head · NAC</p>
+                <p class="person__bio">
+                  <strong>PhD Astronomy.</strong> Observational astronomer &amp; doctoral researcher. Founder — ASTRO, Co-Founder —
+                  ASTRO-NOT. Award-winning science communicator &amp; populariser, writer, poet, gold medalist and university rank
+                  holder.
+                </p>
+              </div>
+            </article>
+            <article class="person">
+              <div class="person__portrait">
+                <svg class="person__ring" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="57" /></svg>
+                <div class="person__photo">
+                  <span class="person__mono" aria-hidden="true">SM</span>
+                  <img src="/crew/sandeep-reddy-moku.jpg" alt="Sandeep Reddy Moku" loading="lazy" onerror="this.remove()" />
+                </div>
+              </div>
+              <div class="person__body">
+                <h3 class="person__name">Sandeep Reddy Moku</h3>
+                <p class="person__role mono">Founder · Novae Glamp &amp; NAC</p>
+                <p class="person__bio">
+                  Building a dark-sky home for astronomy near Hyderabad — where the club meets the campsite, and curiosity meets the
+                  night sky.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ COMMUNITY ============ -->
+      <section class="community section" id="community" data-label="08 — Community">
+        <div class="container">
+          <p class="eyebrow">08 / Community</p>
+          <h2 class="h-display" data-reveal="chars">Astronomy is better together.</h2>
+          <p class="lead community__lead" data-reveal="lines">The most memorable astronomical experiences are often shared.</p>
+          <p class="statement" data-reveal="words">
+            A first telescope observation. A meteor streaking across the sky. The moment Saturn’s rings finally come into view.
+            Novae Astro Club is a place to experience those moments with people who are just as curious about the universe.
+          </p>
+          <div class="why">
+            <p class="eyebrow">Why join NAC?</p>
+            <ul class="why__list">
+              <li><svg><use href="#i-star" /></svg>Participate in astronomy observations</li>
+              <li><svg><use href="#i-star" /></svg>Attend astronomy and space events</li>
+              <li><svg><use href="#i-star" /></svg>Learn practical sky-observation skills</li>
+              <li><svg><use href="#i-star" /></svg>Explore astrophotography</li>
+              <li><svg><use href="#i-star" /></svg>Meet fellow astronomy enthusiasts</li>
+              <li><svg><use href="#i-star" /></svg>Participate in astronomy projects</li>
+              <li><svg><use href="#i-star" /></svg>Discover celestial events</li>
+              <li><svg><use href="#i-star" /></svg>Share observations and discoveries</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FAQ ============ -->
+      <section class="faq section" id="faq" data-label="09 — Questions">
+        <div class="container faq__layout">
+          <div>
+            <p class="eyebrow">09 / Questions</p>
+            <h2 class="h-section" data-reveal="lines">Before you look up.</h2>
+          </div>
+          <div class="faq__list">
+            <div class="qa">
+              <button class="qa__q" type="button" aria-expanded="false"><span>Do I need to know astronomy already?</span><i></i></button>
+              <div class="qa__a"><div><p>No. There’s no entrance test and no prior knowledge needed — just curiosity.</p></div></div>
+            </div>
+            <div class="qa">
+              <button class="qa__q" type="button" aria-expanded="false"><span>Do I need my own telescope?</span><i></i></button>
+              <div class="qa__a"><div><p>No — you don’t need expensive equipment. Astronomer members get four telescope nights a year at Novae Glamp, plus hands-on telescope handling training.</p></div></div>
+            </div>
+            <div class="qa">
+              <button class="qa__q" type="button" aria-expanded="false"><span>Who can join?</span><i></i></button>
+              <div class="qa__a"><div><p>Anyone interested in astronomy — school students, college students, families and lifelong sky-lovers. School students should register using a parent’s phone.</p></div></div>
+            </div>
+            <div class="qa">
+              <button class="qa__q" type="button" aria-expanded="false"><span>Where do telescope nights happen?</span><i></i></button>
+              <div class="qa__a"><div><p>At Novae Glamp, a dark-sky campsite in Bhongir, about 60 km from Hyderabad. Evening events run from 7 to 10:30 PM, and Astronomer members can bring one companion free.</p></div></div>
+            </div>
+            <div class="qa">
+              <button class="qa__q" type="button" aria-expanded="false"><span>Can I stay the night?</span><i></i></button>
+              <div class="qa__a"><div><p>Yes. Astronomer members can add a stay — tent, dinner and breakfast at member rates.</p></div></div>
+            </div>
+            <div class="qa">
+              <button class="qa__q" type="button" aria-expanded="false"><span>How will I hear about events?</span><i></i></button>
+              <div class="qa__a"><div><p>Through the official NAC WhatsApp channel — club updates, sky alerts and event invites — and on Instagram at @novaeastroclub.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CLOSING + FINAL CTA ============ -->
+      <section class="join" id="join" data-label="10 — Join">
+        <div class="container join__intro">
+          <h2 class="h-display join__title" data-reveal="chars">We don’t just want to tell you about the universe.</h2>
+          <p class="join__accent" data-reveal="lines">We want you to experience it.</p>
+          <p class="join__why" data-reveal="fade">
+            Because there is a difference between knowing that Saturn has rings and seeing those rings through a telescope for the
+            first time.
+          </p>
+        </div>
+        <div class="finale">
+          <div class="finale__inner container">
+            <p class="eyebrow finale__eyebrow">Final transmission</p>
+            <h2 class="finale__title">
+              <span class="finale__line">Your next discovery</span>
+              <span class="finale__line finale__line--accent">could be tonight.</span>
+            </h2>
+            <p class="finale__copy">
+              You don’t need to be an astronomer. You don’t need expensive equipment. You don’t need to know every constellation.
+              You just need curiosity.
+            </p>
+            <a class="btn btn--pink btn--xl finale__cta" href="#join" data-join data-magnetic><span>Join Novae Astro Club</span></a>
+            <p class="finale__small mono">Registration takes 2 minutes · School students: use a parent’s phone</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span>Explore</span><svg><use href="#i-star" /></svg><span>Discover</span><svg><use href="#i-star" /></svg><span>Beyond</span><svg><use href="#i-star" /></svg>
+          <span>Explore</span><svg><use href="#i-star" /></svg><span>Discover</span><svg><use href="#i-star" /></svg><span>Beyond</span><svg><use href="#i-star" /></svg>
+        </div>
+      </div>
+      <div class="container footer__grid">
+        <div class="footer__brand">
+          <p class="wordmark" aria-label="Novae">
+            <span>N</span><svg aria-hidden="true"><use href="#nac-mark" /></svg><span>VAE</span>
+          </p>
+          <p class="mono footer__sub">Astro Club</p>
+        </div>
+        <dl class="footer__links">
+          <div><dt class="mono">Instagram</dt><dd><a href="https://www.instagram.com/novaeastroclub/" target="_blank" rel="noopener">@novaeastroclub</a></dd></div>
+          <div><dt class="mono">WhatsApp</dt><dd><a href="#join" data-join>Via registration</a></dd></div>
+          <div><dt class="mono">Web</dt><dd><a href="https://novaeglamp.com" target="_blank" rel="noopener">novaeglamp.com</a></dd></div>
+          <div><dt class="mono">Location</dt><dd>Novae Glamp, Bhongir<br />60 km from Hyderabad</dd></div>
+        </dl>
+      </div>
+      <div class="container footer__base mono">
+        <span>© 2026 Novae Astro Club · An initiative by Novae Glamp</span>
+        <span>Launched 21 · 07 · 2026</span>
+        <a href="#top" class="footer__top">Back to orbit ↑</a>
+      </div>
+    </footer>
+
+    <div class="lightbox" aria-hidden="true">
+      <button class="lightbox__close mono" type="button" aria-label="Close image">Close ✕</button>
+      <figure class="lightbox__figure"><img alt="" /><figcaption class="mono"></figcaption></figure>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
